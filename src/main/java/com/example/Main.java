@@ -62,6 +62,7 @@ public class Main {
       ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
 
       ArrayList<String> output = new ArrayList<String>();
+      output.add("Wellcome to ToolvendorApp. ");
       while (rs.next()) {
         output.add("Read from DB: " + rs.getTimestamp("tick"));
       }
