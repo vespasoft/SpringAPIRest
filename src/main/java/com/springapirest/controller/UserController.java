@@ -1,0 +1,79 @@
+package com.springapirest.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.springapirest.exception.ResourceNotFoundException;
+import com.springapirest.model.User;
+import com.springapirest.repository.RoleRepository;
+import com.springapirest.repository.UserRepository;
+import com.springapirest.security.TokenAuthenticationManager;
+import com.springapirest.service.UserServiceImpl;
+
+/**
+ * Created by Luigi Vespa on 27/06/18.
+ */
+@RestController
+@RequestMapping("/api")
+public class UserController {
+
+	@Autowired
+	UserServiceImpl userServiceImpl;
+
+    public UserController(UserRepository userRepository,
+    					  RoleRepository roleRepository,	
+                          BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userServiceImpl = new UserServiceImpl(userRepository, roleRepository, bCryptPasswordEncoder);
+    }
+
+    @GetMapping("/users")
+    public User getUserById(HttpServletRequest request) {
+    	UsernamePasswordAuthenticationToken authentication = TokenAuthenticationManager.getAuthentication(request);
+    	User user = userServiceImpl.getUserByUsername(authentication.getName());
+    	
+    	if (user==null)
+    	      throw new ResourceNotFoundException("users", null, null);
+    	
+    	return user;
+    }
+
+    @PostMapping("/users")
+    public void signUp(@Valid @RequestBody User user) {
+        userServiceImpl.createUser(user);
+    }
+    
+    @PutMapping("/users")
+    public User updateUser(HttpServletRequest request,
+                                          @RequestBody User userDetails) {
+    	UsernamePasswordAuthenticationToken authentication = TokenAuthenticationManager.getAuthentication(request);
+  
+    	User user = userServiceImpl.getUserByUsername(authentication.getName());
+    	
+    	userDetails.setId(user.getId());
+        
+        return userServiceImpl.updateUser(userDetails);
+    }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<?> deleteUser(HttpServletRequest request) {
+    	UsernamePasswordAuthenticationToken authentication = TokenAuthenticationManager.getAuthentication(request);
+    	
+    	User user = userServiceImpl.getUserByUsername(authentication.getName());
+    	userServiceImpl.deleteUser(user.getId());
+
+        return ResponseEntity.ok().build();
+    }
+    
+}
