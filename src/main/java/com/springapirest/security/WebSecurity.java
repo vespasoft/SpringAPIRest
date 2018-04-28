@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 
 import static com.springapirest.security.SecurityConstants.LOG_IN_URL;
 import static com.springapirest.security.SecurityConstants.SIGN_UP_URL;
+import static com.springapirest.security.SecurityConstants.URL_COUNTRIES;
 
 import java.util.Arrays;
 
@@ -35,7 +36,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
-            .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
+        	.antMatchers(HttpMethod.GET, URL_COUNTRIES).permitAll()
+        	.antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
             .antMatchers(HttpMethod.POST, LOG_IN_URL).permitAll()
             .anyRequest().authenticated()
             .and()
