@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -60,16 +61,20 @@ public class User {
     @CreatedDate
     private Date createdAt;
 
-    @Column(nullable = true)
-    @Temporal(TemporalType.TIMESTAMP)
-    @LastModifiedDate
-    private Date updatedAt;
-    
     @Size(max=5, message="Version code should have max 5 characters")
     private String versionCode;
     
     @Size(max=50, message="Version code should have max 5 characters")
     private String platform;
+    
+    @Column(nullable = true)
+    @Temporal(TemporalType.TIMESTAMP)
+    @LastModifiedDate
+    private Date updatedAt;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(name="city_id")
+    private City city;
     
 	@ManyToMany
     @JoinTable( 
@@ -158,6 +163,14 @@ public class User {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public City getCity() {
+		return city;
+	}
+
+	public void setCity(City city) {
+		this.city = city;
 	}
 
 	public Collection<Role> getRoles() {
