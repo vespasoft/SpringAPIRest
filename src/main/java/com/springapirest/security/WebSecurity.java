@@ -14,9 +14,10 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.context.annotation.Bean;
 
-import static com.springapirest.security.SecurityConstants.LOG_IN_URL;
-import static com.springapirest.security.SecurityConstants.SIGN_UP_URL;
+import static com.springapirest.security.SecurityConstants.URL_SIGN_UP;
+import static com.springapirest.security.SecurityConstants.URL_LOG_IN;
 import static com.springapirest.security.SecurityConstants.URL_COUNTRIES;
+import static com.springapirest.security.SecurityConstants.URL_CITIES;
 
 import java.util.Arrays;
 
@@ -37,11 +38,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
         	.antMatchers(HttpMethod.GET, URL_COUNTRIES).permitAll()
-        	.antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
-            .antMatchers(HttpMethod.POST, LOG_IN_URL).permitAll()
+        	.antMatchers(HttpMethod.GET, URL_CITIES).permitAll()
+        	.antMatchers(HttpMethod.POST, URL_SIGN_UP).permitAll()
+            .antMatchers(HttpMethod.POST, URL_LOG_IN).permitAll()
             .anyRequest().authenticated()
             .and()
-            .addFilterBefore(new AuthenticationFilter(LOG_IN_URL, authenticationManager()), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(new AuthenticationFilter(URL_LOG_IN, authenticationManager()), UsernamePasswordAuthenticationFilter.class)
             .addFilter(new AuthorizationFilter(authenticationManager()))
             // this disables session creation on Spring Security
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

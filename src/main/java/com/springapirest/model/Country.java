@@ -1,7 +1,6 @@
 package com.springapirest.model;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 
 /**
@@ -9,7 +8,6 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "country")
-@EntityListeners(AuditingEntityListener.class)
 public class Country {
     @Id
     private int id;

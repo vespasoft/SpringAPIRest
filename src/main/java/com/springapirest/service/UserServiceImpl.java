@@ -18,14 +18,19 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 	@Autowired
 	private RoleRepository roleRepository;
+	@Autowired
+	TempTokenServiceImpl tempTokenService;
+	
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     
 	public UserServiceImpl(UserRepository userRepository, 
 		RoleRepository roleRepository, 
-		BCryptPasswordEncoder bCryptPasswordEncoder) {
+		BCryptPasswordEncoder bCryptPasswordEncoder,
+		TempTokenServiceImpl tempTokenService) {
 			super();
 			this.userRepository = userRepository;
 			this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+			this.tempTokenService = tempTokenService;
 	}
 
 	@Override
@@ -52,7 +57,13 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setCreatedAt(new Date());
         user.setRoles(Arrays.asList(roleRepository.findOne(1)));
+        user.setVerified(false);
+        user.setActive(true);
         userRepository.save(user);
+        
+        User userAdded = getUserByUsername(user.getUsername());
+        if (userAdded!=null)
+        	tempTokenService.createToken(userAdded);
 	}
 
 	@Override

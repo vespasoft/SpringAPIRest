@@ -8,18 +8,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.springapirest.exception.ResourceNotFoundException;
 import com.springapirest.model.User;
 import com.springapirest.repository.RoleRepository;
 import com.springapirest.repository.UserRepository;
 import com.springapirest.security.TokenAuthenticationManager;
+import com.springapirest.service.TempTokenServiceImpl;
 import com.springapirest.service.UserServiceImpl;
 
 /**
@@ -34,18 +32,14 @@ public class UserController {
 
     public UserController(UserRepository userRepository,
     					  RoleRepository roleRepository,	
-                          BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userServiceImpl = new UserServiceImpl(userRepository, roleRepository, bCryptPasswordEncoder);
+                          BCryptPasswordEncoder bCryptPasswordEncoder, TempTokenServiceImpl tempTokenService) {
+        this.userServiceImpl = new UserServiceImpl(userRepository, roleRepository, bCryptPasswordEncoder, tempTokenService);
     }
 
     @GetMapping("/users")
     public User getUserById(HttpServletRequest request) {
     	UsernamePasswordAuthenticationToken authentication = TokenAuthenticationManager.getAuthentication(request);
     	User user = userServiceImpl.getUserByUsername(authentication.getName());
-    	
-    	if (user==null)
-    	      throw new ResourceNotFoundException("users", null, null);
-    	
     	return user;
     }
 
@@ -66,7 +60,7 @@ public class UserController {
         return userServiceImpl.updateUser(userDetails);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/users")
     public ResponseEntity<?> deleteUser(HttpServletRequest request) {
     	UsernamePasswordAuthenticationToken authentication = TokenAuthenticationManager.getAuthentication(request);
     	

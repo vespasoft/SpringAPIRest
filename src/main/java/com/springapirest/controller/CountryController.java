@@ -4,9 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.springapirest.exception.ResourceNotFoundException;
+import com.springapirest.model.City;
 import com.springapirest.model.Country;
+import com.springapirest.repository.CityRepository;
 import com.springapirest.repository.CountryRepository;
-
+import com.springapirest.service.CityServiceImpl;
+import com.springapirest.service.CountryServiceImpl;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -16,45 +20,58 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class CountryController {
-
+    
     @Autowired
-    CountryRepository countryRepository;
+	CountryServiceImpl countryServiceImpl;
+    
+    @Autowired
+	CityServiceImpl cityServiceImpl;
+
+    public CountryController(CountryRepository countryRepository, CityRepository cityRepository) {
+    	this.countryServiceImpl = new CountryServiceImpl(countryRepository);
+    	this.cityServiceImpl = new CityServiceImpl(cityRepository);
+	}
 
     @GetMapping("/countries")
     public List<Country> getAllCountries() {
-        return countryRepository.findAll();
+        return countryServiceImpl.getAll();
+    }
+    
+    @GetMapping("/countries/{id}/cities")
+    public List<City> getAllCitiesByCountry(@PathVariable(value = "id") int countryId) {
+    	Country countryFinded = countryServiceImpl.getCountryById(countryId);
+    	if (countryFinded==null) 
+    		throw new ResourceNotFoundException("Countries", "id", countryId);
+    	    		
+    	return cityServiceImpl.getAllByCountry(countryFinded);
+    }
+    
+    @GetMapping("/countries/{id}")
+    public Country getCountryById(@PathVariable(value = "id") int countryId) {
+        return countryServiceImpl.getCountryById(countryId);
     }
 
     @PostMapping("/countries")
-    public Country createCountry(@Valid @RequestBody Country Country) {
-        return countryRepository.save(Country);
-    }
-
-    @GetMapping("/countries/{id}")
-    public Country getCountryById(@PathVariable(value = "id") int CountryId) {
-        return countryRepository.findOne(CountryId);
+    public void createCountry(@Valid @RequestBody Country country) {
+        countryServiceImpl.createCountry(country);
     }
 
     @PutMapping("/countries/{id}")
-    public Country updateCountry(@PathVariable(value = "id") int CountryId,
-                                           @Valid @RequestBody Country CountryDetails) {
-
-        Country Country = countryRepository.findOne(CountryId);
-
-        Country.setName(CountryDetails.getName());
-        Country.setNicename(CountryDetails.getNicename());
-        Country.setNumcode(CountryDetails.getNumcode());
-        
-        Country updatedCountry = countryRepository.save(Country);
-        return updatedCountry;
+    public ResponseEntity<Country> updateCountry(@PathVariable(value = "id") int countryId,
+                                           @Valid @RequestBody Country countryDetails) {
+    	countryDetails.setId(countryId);
+    	Country updatedCountry = countryServiceImpl.updateCountry(countryDetails);
+    	if (updatedCountry==null) 
+    		return ResponseEntity.badRequest().build();
+    	else
+    		return ResponseEntity.ok(updatedCountry);
     }
 
     @DeleteMapping("/countries/{id}")
-    public ResponseEntity<?> deleteCountry(@PathVariable(value = "id") int CountryId) {
-        Country Country = countryRepository.findOne(CountryId);
+    public ResponseEntity<?> deleteCountry(@PathVariable(value = "id") int countryId) {
 
-        countryRepository.delete(Country);
-
+        countryServiceImpl.deleteCountry(countryId);
+        
         return ResponseEntity.ok().build();
     }
 }

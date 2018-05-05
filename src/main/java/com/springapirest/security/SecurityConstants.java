@@ -10,6 +10,8 @@ public class SecurityConstants {
     public static final String HEADER_STRING = "Authorization";
     public static final String HEADER_USER_STRING = "GET";
     public static final String URL_COUNTRIES = "/api/countries";
-    public static final String SIGN_UP_URL = "/api/users";
-    public static final String LOG_IN_URL = "/api/authenticator";
+    public static final String URL_CITIES = "/api/countries/{id}/cities";
+    public static final String URL_SIGN_UP = "/api/users";
+    public static final String URL_LOG_IN = "/api/authenticator";
+    public static final String URL_VERIFIER = "/api/verifier";
 }

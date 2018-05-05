@@ -28,8 +28,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @Entity
 @Table(name = "users")
-@JsonIgnoreProperties(value = {"createdAt", "updatedAt", "roles"},
-allowGetters = true, allowSetters = true)
+@JsonIgnoreProperties(value = {"createdAt", "updatedAt", "roles", "fcmToken", "active"},
+allowGetters = false, allowSetters = true)
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,8 +52,8 @@ public class User {
 	@Size(min=8, message="Phone should have atleast 8 characters")
 	private String phone;
 	
-	@NotBlank(message="Password can not be null")
-	@Size(min=7, message="Password should have between 7 to 20 characters")
+	//@NotBlank(message="Password can not be null")
+	//@Size(min=7, message="Password should have between 7 to 20 characters")
     private String passwrd;
     
     @Column(nullable = true, updatable = false)
@@ -84,6 +84,12 @@ public class User {
         inverseJoinColumns = @JoinColumn(
           name = "role_id", referencedColumnName = "id")) 
     private Collection<Role> roles;
+	
+	private String fcmToken;
+	
+	private boolean verified;
+	
+	private boolean active;
 
 	public int getId() {
 		return id;
@@ -179,6 +185,30 @@ public class User {
 
 	public void setRoles(Collection<Role> roles) {
 		this.roles = roles;
+	}
+	
+	public String getFcmToken() {
+		return fcmToken;
+	}
+
+	public void setFcmToken(String fcmToken) {
+		this.fcmToken = fcmToken;
+	}
+
+	public boolean isVerified() {
+		return verified;
+	}
+
+	public void setVerified(boolean verified) {
+		this.verified = verified;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	@Override
