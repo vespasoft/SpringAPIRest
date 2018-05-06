@@ -4,7 +4,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.persistence.*;
 
 /**
- * Created by luis vespa on 27/06/18.
+ * Created by luis vespa on 27/04/18.
  */
 @Entity
 @Table(name = "country")

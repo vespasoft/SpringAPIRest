@@ -24,7 +24,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * Created by luis vespa on 27/06/18.
+ * Created by luis vespa on 27/04/18.
  */
 @Entity
 @Table(name = "users")
