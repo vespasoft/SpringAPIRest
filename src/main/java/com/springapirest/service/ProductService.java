@@ -9,6 +9,6 @@ public interface ProductService {
 	
 	public List<Product> getAll();
 	
-	public Product getServiceById(int id);
+	public Product getProductById(int id);
 	
 }
