@@ -24,7 +24,7 @@ import com.springapirest.service.UserServiceImpl;
  */
 @RestController
 @RequestMapping("/api")
-public class VerifierController {
+public class VerificatorController {
 	
 	@Autowired
 	TempTokenServiceImpl tempTokenServiceImpl;
@@ -32,7 +32,7 @@ public class VerifierController {
 	@Autowired
 	UserServiceImpl userServiceImpl;
 
-    public VerifierController(UserRepository userRepository,
+    public VerificatorController(UserRepository userRepository,
     					  RoleRepository roleRepository,
     					  TempTokenRepository tokenRepository,
                           BCryptPasswordEncoder bCryptPasswordEncoder, TempTokenServiceImpl tempTokenService) {
@@ -49,7 +49,7 @@ public class VerifierController {
     }
 	
 	@PostMapping("/verificator")
-    public void verifier(HttpServletRequest request, @RequestBody TempToken token) {
+    public void verificator(HttpServletRequest request, @RequestBody TempToken token) {
 		UsernamePasswordAuthenticationToken authentication = TokenAuthenticationManager.getAuthentication(request);
     	User userFinded = userServiceImpl.getUserByUsername(authentication.getName());
     	System.out.println("user "+userFinded.getUsername());

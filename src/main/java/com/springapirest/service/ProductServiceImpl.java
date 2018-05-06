@@ -19,13 +19,11 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public List<Product> getAll() {
-		// TODO Auto-generated method stub
 		return productRepository.findAll();
 	}
 
 	@Override
 	public Product getServiceById(int id) {
-		// TODO Auto-generated method stub
 		Product product = productRepository.findOne(id);
 		return product;
 	}
