@@ -14,11 +14,22 @@ import javax.persistence.Table;
 @Table(name = "category")
 public class Category {
 	@Id
-	 @GeneratedValue(strategy = GenerationType.IDENTITY)
-	 private Integer id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 	 
-	 @Column(name="title", length=45)
-	 private String title;
+	@Column(name="title", length=45)
+	private String title;
+	 
+
+	public Category() {
+		super();
+	}
+
+	public Category(Integer id, String title) {
+		super();
+		this.id = id;
+		this.title = title;
+	}
 
 	public Integer getId() {
 		return id;

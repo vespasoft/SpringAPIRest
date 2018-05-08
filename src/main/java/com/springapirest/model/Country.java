@@ -27,6 +27,10 @@ public class Country {
     
     private int phonecode;
 
+	public Country() {
+		super();
+	}
+
 	public Country(int id, String name) {
 		super();
 		this.id = id;
