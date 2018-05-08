@@ -3,6 +3,8 @@ package com.springapirest.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.springapirest.model.Category;
 import com.springapirest.model.Product;
 import com.springapirest.repository.ProductRepository;
 
@@ -26,6 +28,11 @@ public class ProductServiceImpl implements ProductService {
 	public Product getProductById(int id) {
 		Product product = productRepository.findOne(id);
 		return product;
+	}
+
+	@Override
+	public List<Product> getAllByCategory(Category category) {
+		return productRepository.findAllByCategory(category);
 	}
 
 }

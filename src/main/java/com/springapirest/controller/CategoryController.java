@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springapirest.exception.ResourceNotFoundException;
 import com.springapirest.model.Category;
 import com.springapirest.repository.CategoryRepository;
 import com.springapirest.service.CategoryServiceImpl;
@@ -34,7 +35,11 @@ public class CategoryController {
 	
 	@GetMapping("/categories/{id}")
     public Category getCategoryById(@PathVariable(value = "id") int categoryId) {
-        return categoryServiceImpl.getCategoryById(categoryId);
+		Category categoryFinded = categoryServiceImpl.getCategoryById(categoryId);
+        if (categoryFinded==null) 
+    		throw new ResourceNotFoundException("Category", "id", categoryId);
+        
+        return categoryFinded;
     }
 	
 }

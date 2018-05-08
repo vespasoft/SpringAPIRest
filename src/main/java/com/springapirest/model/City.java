@@ -35,7 +35,14 @@ public class City {
 	   this.city = city;
 	 }
 	
-	 public Integer getId() {
+	 public City(Integer id, String city, Country country) {
+		super();
+		this.id = id;
+		this.city = city;
+		this.country = country;
+	}
+
+	public Integer getId() {
 	    return this.id;
 	 }
 	

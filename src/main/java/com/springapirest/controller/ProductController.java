@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springapirest.exception.ResourceNotFoundException;
+import com.springapirest.model.Category;
 import com.springapirest.model.Product;
+import com.springapirest.repository.CategoryRepository;
 import com.springapirest.repository.ProductRepository;
+import com.springapirest.service.CategoryServiceImpl;
 import com.springapirest.service.ProductServiceImpl;
 
 
@@ -22,9 +26,13 @@ public class ProductController {
 	
 	@Autowired
 	ProductServiceImpl productServiceImpl;
+	
+	@Autowired
+	CategoryServiceImpl categoryServiceImpl;
 
-	public ProductController(ProductRepository productRepository) {
+	public ProductController(ProductRepository productRepository, CategoryRepository categoryRepository) {
     	this.productServiceImpl = new ProductServiceImpl(productRepository);
+    	this.categoryServiceImpl = new CategoryServiceImpl(categoryRepository);
 	}
 	
 	@GetMapping("/products")
@@ -34,7 +42,20 @@ public class ProductController {
 	
 	@GetMapping("/products/{id}")
     public Product getProductById(@PathVariable(value = "id") int productId) {
-        return productServiceImpl.getProductById(productId);
+        Product productFinded = productServiceImpl.getProductById(productId);
+        if (productFinded==null) 
+    		throw new ResourceNotFoundException("Product", "id", productId);
+        
+        return productFinded;
+    }
+	
+	@GetMapping("/categories/{id}/products")
+    public List<Product> getAllByCategory(@PathVariable(value = "id") int categoryId) {
+        Category categoryFinded = categoryServiceImpl.getCategoryById(categoryId);
+        if (categoryFinded==null) 
+    		throw new ResourceNotFoundException("Category", "id", categoryId);
+        
+        return productServiceImpl.getAllByCategory(categoryFinded);
     }
 	
 }
