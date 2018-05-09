@@ -7,9 +7,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +18,23 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import com.springapirest.controller.CategoryController;
+import com.springapirest.controller.ProductController;
 import com.springapirest.model.Category;
+import com.springapirest.model.Product;
 import com.springapirest.repository.CategoryRepository;
+import com.springapirest.repository.ProductRepository;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = { CategoryController.class }, secure = false)
-public class CategoryControllerTest {
+public class ProductControllerTest {
 
 	@Configuration
     static class ContextConfiguration {
 
         @Bean
-        public CategoryController categoryController(CategoryRepository categoryRepository) {
-        	CategoryController categoryController = new CategoryController(categoryRepository);
-            return categoryController;
+        public ProductController categoryController(ProductRepository productRepository, CategoryRepository categoryRepository) {
+        	ProductController productController = new ProductController(productRepository, categoryRepository);
+            return productController;
         }
     }	
 	
@@ -41,37 +42,57 @@ public class CategoryControllerTest {
     private MockMvc mvc;
 
     @MockBean
-    private CategoryController categoryController;
+    private ProductController productController;
     
     @Test
-	public void getAllCategories() throws Exception {
+	public void getAllProducts() throws Exception {
     	
-    	Category category = new Category(1, "Manicura y Pedicura");
+    	Product product = new Product();
+    	product.setId(1);
 		
-		List<Category> allCategories = singletonList(category);
+		List<Product> allProducts = singletonList(product);
 		
-		given(categoryController.getAllCategories()).willReturn(allCategories);
+		given(productController.getAllProducts()).willReturn(allProducts);
 
-		mvc.perform(get("/api/categories")
+		mvc.perform(get("/api/products")
 	               .contentType(APPLICATION_JSON))
 	               .andExpect(status().isOk())
-	               .andExpect(jsonPath("$[0].id").exists())
-				   .andExpect(jsonPath("$[0].title", is(category.getTitle())));
+	               .andExpect(jsonPath("$[0].id").exists());
 		
 	}
     
     @Test
-	public void getCategoryById() throws Exception {
+	public void getProductById() throws Exception {
     	
-    	Category category = new Category(1, "Manicura y Pedicura");
+    	Product product = new Product();
+    	product.setId(1);
 		
-		given(categoryController.getCategoryById(category.getId())).willReturn(category);
+		given(productController.getProductById(product.getId())).willReturn(product);
 
-		mvc.perform(get("/api/categories/"+category.getId())
+		mvc.perform(get("/api/products/"+product.getId())
 	               .contentType(APPLICATION_JSON))
 	               .andExpect(status().isOk())
 	               .andExpect(jsonPath("id").exists())
-				   .andExpect(jsonPath("title", is(category.getTitle())));
+				   .andExpect(jsonPath("title", is(product.getTitle())));
+		
+	}
+    
+    @Test
+	public void getAllProductsByCategory() throws Exception {
+    	
+    	Category category = new Category(3, "Peluquería");
+		
+    	Product product = new Product();
+    	product.setId(1);
+		
+    	List<Product> allProducts = singletonList(product);
+		
+		given(productController.getAllByCategory(category.getId())).willReturn(allProducts);
+		
+		mvc.perform(get("/api/categories/"+category.getId()+"/products")
+	               .contentType(APPLICATION_JSON))
+	               .andExpect(status().isOk())
+	               .andExpect(jsonPath("$[0].id").exists());
 		
 	}
 
