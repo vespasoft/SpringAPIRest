@@ -1,4 +1,4 @@
-package com.springapirest.unit.controller;
+package com.springapirest.unit;
 
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.is;

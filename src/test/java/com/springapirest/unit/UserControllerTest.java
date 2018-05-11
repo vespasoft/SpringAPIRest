@@ -1,4 +1,4 @@
-package com.springapirest.unit.controller;
+package com.springapirest.unit;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -20,8 +20,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.springapirest.controller.CategoryController;
 import com.springapirest.controller.UserController;
-import com.springapirest.model.City;
-import com.springapirest.model.User;
 import com.springapirest.repository.RoleRepository;
 import com.springapirest.repository.UserRepository;
 import com.springapirest.service.TempTokenServiceImpl;
