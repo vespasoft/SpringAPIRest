@@ -33,7 +33,8 @@ public class UserController {
 
     public UserController(UserRepository userRepository,
     					  RoleRepository roleRepository,	
-                          BCryptPasswordEncoder bCryptPasswordEncoder, TempTokenServiceImpl tempTokenService) {
+                          BCryptPasswordEncoder bCryptPasswordEncoder, 
+                          TempTokenServiceImpl tempTokenService) {
         this.userServiceImpl = new UserServiceImpl(userRepository, roleRepository, bCryptPasswordEncoder, tempTokenService);
     }
 

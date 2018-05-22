@@ -18,6 +18,8 @@ import com.springapirest.repository.UserRepository;
 import com.springapirest.security.TokenAuthenticationManager;
 import com.springapirest.service.TempTokenServiceImpl;
 import com.springapirest.service.UserServiceImpl;
+import com.springapirest.thread.ThreadSendValidationCodeEmail;
+import com.springapirest.thread.ThreadSendWelcomeEmail;
 
 /**
  * Created by Luigi Vespa on 28/05/18.
@@ -35,7 +37,8 @@ public class VerificatorController {
     public VerificatorController(UserRepository userRepository,
     					  RoleRepository roleRepository,
     					  TempTokenRepository tokenRepository,
-                          BCryptPasswordEncoder bCryptPasswordEncoder, TempTokenServiceImpl tempTokenService) {
+                          BCryptPasswordEncoder bCryptPasswordEncoder, 
+                          TempTokenServiceImpl tempTokenService) {
         this.userServiceImpl = new UserServiceImpl(userRepository, roleRepository, bCryptPasswordEncoder, tempTokenService);
         this.tempTokenServiceImpl = new TempTokenServiceImpl(tokenRepository);
     }
@@ -62,6 +65,9 @@ public class VerificatorController {
 			userFinded.setVerified(true);
 			userServiceImpl.updateUser(userFinded);
 			tempTokenServiceImpl.deleteToken(userFinded);
+			// ejecuta un thread (hilo) en 2do plano donde se envia el correo.
+            ThreadSendWelcomeEmail sendEmail = new ThreadSendWelcomeEmail(userFinded);
+            sendEmail.start();
 		} else {
 			throw new ResourceNotFoundException("Verificator", "This token is not valid");
 		}
