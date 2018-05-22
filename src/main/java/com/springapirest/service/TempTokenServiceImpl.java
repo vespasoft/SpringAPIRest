@@ -26,21 +26,23 @@ public class TempTokenServiceImpl implements TempTokenService {
 	}
 
 	@Override
-	public void createToken(User user) {
+	public String createToken(User user) {
 	    TempToken tokenFinded = tokenRepository.findByUser(user);
+	    String tokenGenerated = StringUtil.generateTokenString(4);
 	    if (tokenFinded==null) {
 	    	TempToken token = new TempToken();
 			token.setCreatedAt(new Date());
 			token.setExpirationAt(new Date());
-			token.setTokenString(StringUtil.generateTokenString(4));
+			token.setTokenString(tokenGenerated);
 			token.setUser(user);
 			tokenRepository.save(token);
 	    } else {
 	    	tokenFinded.setCreatedAt(new Date());
 	    	tokenFinded.setExpirationAt(new Date());
-	    	tokenFinded.setTokenString(StringUtil.generateTokenString(4));
+	    	tokenFinded.setTokenString(tokenGenerated);
 	    	tokenRepository.save(tokenFinded);
 	    }
+	    return tokenGenerated;
 	}
 
 	@Override

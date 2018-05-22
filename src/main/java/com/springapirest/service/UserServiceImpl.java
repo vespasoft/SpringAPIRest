@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.springapirest.model.User;
 import com.springapirest.repository.RoleRepository;
 import com.springapirest.repository.UserRepository;
+import com.springapirest.thread.ThreadSendValidationCodeEmail;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -62,8 +63,15 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         
         User userAdded = getUserByUsername(user.getUsername());
-        if (userAdded!=null)
-        	tempTokenService.createToken(userAdded);
+        if (userAdded!=null) {
+        	String tokenGenerated = tempTokenService.createToken(userAdded);
+        	
+        	// ejecuta un thread (hilo) en 2do plano donde se envia el correo.
+            ThreadSendValidationCodeEmail sendEmail = new ThreadSendValidationCodeEmail(user, tokenGenerated);
+            sendEmail.start();
+            
+        }
+        
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package com.springapirest.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,7 +33,8 @@ public class UserController {
 
     public UserController(UserRepository userRepository,
     					  RoleRepository roleRepository,	
-                          BCryptPasswordEncoder bCryptPasswordEncoder, TempTokenServiceImpl tempTokenService) {
+                          BCryptPasswordEncoder bCryptPasswordEncoder, 
+                          TempTokenServiceImpl tempTokenService) {
         this.userServiceImpl = new UserServiceImpl(userRepository, roleRepository, bCryptPasswordEncoder, tempTokenService);
     }
 
@@ -44,8 +46,9 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public void signUp(@Valid @RequestBody User user) {
+    public ResponseEntity<User> signUp(@Valid @RequestBody User user) {
         userServiceImpl.createUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     
     @PutMapping("/users")

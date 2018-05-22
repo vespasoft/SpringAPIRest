@@ -217,7 +217,6 @@ public class User {
 				+ ", password=" + passwrd + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
 	}
 	
-	
     
 }
 

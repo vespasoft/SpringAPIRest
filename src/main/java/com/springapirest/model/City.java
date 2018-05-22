@@ -25,8 +25,9 @@ public class City {
 	 
 	 public City() {
 	 }
-	
-	 public City(Country country) {
+
+
+	public City(Country country) {
 	    this.country = country;
 	 }
 	 
