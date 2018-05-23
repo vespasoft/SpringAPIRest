@@ -11,6 +11,9 @@ import com.springapirest.repository.CityRepository;
 import com.springapirest.repository.CountryRepository;
 import com.springapirest.service.CityServiceImpl;
 import com.springapirest.service.CountryServiceImpl;
+
+import io.swagger.annotations.Api;
+
 import javax.validation.Valid;
 import java.util.List;
 
@@ -19,6 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api")
+@Api(value="Country Controller", description="Operations pertaining of countries and cities")
 public class CountryController {
     
     @Autowired

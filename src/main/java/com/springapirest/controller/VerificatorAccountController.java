@@ -28,7 +28,7 @@ import io.swagger.annotations.Api;
 @RestController
 @RequestMapping("/api")
 @Api(value="Verificator Controller", description="Operations pertaining of account verification of the user logged")
-public class VerificatorController {
+public class VerificatorAccountController {
 	
 	@Autowired
 	TempTokenServiceImpl tempTokenServiceImpl;
@@ -36,7 +36,7 @@ public class VerificatorController {
 	@Autowired
 	UserServiceImpl userServiceImpl;
 
-    public VerificatorController(UserRepository userRepository,
+    public VerificatorAccountController(UserRepository userRepository,
     					  RoleRepository roleRepository,
     					  TempTokenRepository tokenRepository,
                           BCryptPasswordEncoder bCryptPasswordEncoder, 
@@ -45,7 +45,7 @@ public class VerificatorController {
         this.tempTokenServiceImpl = new TempTokenServiceImpl(tokenRepository);
     }
 	
-	@GetMapping("/verificator")
+	@GetMapping("/verificator-account")
     public void generateTempToken(HttpServletRequest request) {
     	UsernamePasswordAuthenticationToken authentication = TokenAuthenticationManager.getAuthentication(request);
     	User userFinded = userServiceImpl.getUserByUsername(authentication.getName());
@@ -53,7 +53,7 @@ public class VerificatorController {
     	tempTokenServiceImpl.createToken(userFinded);
     }
 	
-	@PostMapping("/verificator")
+	@PostMapping("/verificator-account")
     public void verificator(HttpServletRequest request, @RequestBody TempToken token) {
 		UsernamePasswordAuthenticationToken authentication = TokenAuthenticationManager.getAuthentication(request);
     	User userFinded = userServiceImpl.getUserByUsername(authentication.getName());

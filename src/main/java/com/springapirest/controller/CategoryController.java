@@ -13,12 +13,15 @@ import com.springapirest.model.Category;
 import com.springapirest.repository.CategoryRepository;
 import com.springapirest.service.CategoryServiceImpl;
 
+import io.swagger.annotations.Api;
+
 
 /**
  * Created by luis vespa on 06/05/18.
  */
 @RestController
 @RequestMapping("/api")
+@Api(value="Category Controller", description="Operations pertaining of product categories")
 public class CategoryController {
 	
 	@Autowired
