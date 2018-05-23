@@ -16,12 +16,15 @@ import com.springapirest.repository.ProductRepository;
 import com.springapirest.service.CategoryServiceImpl;
 import com.springapirest.service.ProductServiceImpl;
 
+import io.swagger.annotations.Api;
+
 
 /**
  * Created by luis vespa on 06/05/18.
  */
 @RestController
 @RequestMapping("/api")
+@Api(value="Products Controller", description="Operations pertaining to products of a User Loggded")
 public class ProductController {
 	
 	@Autowired

@@ -18,14 +18,16 @@ import com.springapirest.repository.UserRepository;
 import com.springapirest.security.TokenAuthenticationManager;
 import com.springapirest.service.TempTokenServiceImpl;
 import com.springapirest.service.UserServiceImpl;
-import com.springapirest.thread.ThreadSendValidationCodeEmail;
 import com.springapirest.thread.ThreadSendWelcomeEmail;
+
+import io.swagger.annotations.Api;
 
 /**
  * Created by Luigi Vespa on 28/05/18.
  */
 @RestController
 @RequestMapping("/api")
+@Api(value="Verificator Controller", description="Operations pertaining of account verification of the user logged")
 public class VerificatorController {
 	
 	@Autowired

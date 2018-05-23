@@ -21,11 +21,15 @@ import com.springapirest.security.TokenAuthenticationManager;
 import com.springapirest.service.TempTokenServiceImpl;
 import com.springapirest.service.UserServiceImpl;
 
+import io.swagger.annotations.Api;
+
 /**
  * Created by Luigi Vespa on 27/06/18.
  */
 @RestController
 @RequestMapping("/api")
+@Api(value = "User Controller", 
+description = "Operations pertaining of User Logged")
 public class UserController {
 
 	@Autowired
