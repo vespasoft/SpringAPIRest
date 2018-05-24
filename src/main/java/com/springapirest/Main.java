@@ -57,11 +57,12 @@ public class Main {
 
   @RequestMapping("/db")
   String db(Map<String, Object> model) {
+	Connection connection = null;
 	Statement stmt = null;  
 	ResultSet rs = null;
 	
 	try {
-      Connection connection = dataSource.getConnection();
+      connection = dataSource.getConnection();
   	  stmt = connection.createStatement();
       stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
       stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
@@ -89,6 +90,12 @@ public class Main {
     	if (stmt!=null)
     		try {
     			stmt.close();
+			} catch (SQLException e) {
+				LOGGER.log(Level.WARNING, e.getMessage());
+			}
+    	if (connection!=null)
+    		try {
+    			connection.close();
 			} catch (SQLException e) {
 				LOGGER.log(Level.WARNING, e.getMessage());
 			}
