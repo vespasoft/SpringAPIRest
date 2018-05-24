@@ -27,9 +27,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Controller
 @SpringBootApplication
@@ -40,6 +43,8 @@ public class Main {
 
   //@Autowired
   private DataSource dataSource;
+  
+  private final static Logger LOGGER = Logger.getLogger("com.springapirest.Control");
 
   public static void main(String[] args) throws Exception {
     SpringApplication.run(Main.class, args);
@@ -52,11 +57,15 @@ public class Main {
 
   @RequestMapping("/db")
   String db(Map<String, Object> model) {
-    try (Connection connection = dataSource.getConnection()) {
-      Statement stmt = connection.createStatement();
+	Statement stmt = null;  
+	ResultSet rs = null;
+	
+	try {
+      Connection connection = dataSource.getConnection();
+  	  stmt = connection.createStatement();
       stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
       stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
-      ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
+      rs = stmt.executeQuery("SELECT tick FROM ticks");
 
       ArrayList<String> output = new ArrayList<String>();
       output.add("Wellcome to ToolvendorApp. ");
@@ -65,12 +74,25 @@ public class Main {
       }
 
       model.put("records", output);
-      rs.close();
-      stmt.close();
+      
       return "db";
     } catch (Exception e) {
       model.put("message", e.getMessage());
       return "error";
+    } finally {
+    	if (rs!=null)
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				LOGGER.log(Level.WARNING, e.getMessage());
+			}
+    	if (stmt!=null)
+    		try {
+    			stmt.close();
+			} catch (SQLException e) {
+				LOGGER.log(Level.WARNING, e.getMessage());
+			}
+        
     }
   }
   
