@@ -37,49 +37,6 @@ public class EmailServiceImpl implements EmailService {
 	}
 	
 	@Override
-    public void sendMailSSL(String toEmail, String emailSubject, String emailBody, String content) {
-        this.to = toEmail;
-        this.subject = emailSubject;
-        this.messageContent = emailBody;
-        
-        Properties props = new Properties();
-        props.put("mail.smtp.host", SERVIDOR_SMTP);
-        props.put("mail.smtp.socketFactory.port", SMTP_PORT_SSL);
-        props.put("mail.smtp.socketFactory.class",
-                        "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", SMTP_PORT_SSL);
-
-        Session session = Session.getDefaultInstance(props,
-                new javax.mail.Authenticator() {
-                        protected PasswordAuthentication getPasswordAuthentication() {
-                                return new PasswordAuthentication(SMTP_AUTH_USER, SMTP_AUTH_PWD);
-                        }
-                });
-
-        try {
-
-                final Message message = new MimeMessage(session);
-                message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
-                try {
-                    message.setFrom(new InternetAddress(EMAIL_FROM, SUBJECT_FROM_PERSONAL));
-                } catch (UnsupportedEncodingException e) {
-                    LOGGER.error("Error al agregar InternetAddress: " + e.getMessage(), e);
-                }
-                message.setSubject(subject);
-                if (content.equalsIgnoreCase("text")) message.setText(messageContent);
-                else if (content.equalsIgnoreCase("text/html")) message.setContent(messageContent, "text/html");
-                message.setSentDate(new Date());
-                Transport.send(message);
-
-                System.out.println("SendMailSSL is done.");
-
-        } catch (MessagingException ex) {
-                LOGGER.error("Error al enviar mensagem: " + ex.getMessage(), ex);
-        }
-    }
-
-	@Override
 	public void sendMailTSL(String toEmail, String emailSubject, String emailBody, String content, String filename) {
 	    this.to = toEmail;
         this.subject = emailSubject;

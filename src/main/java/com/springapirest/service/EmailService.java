@@ -10,8 +10,6 @@ public interface EmailService {
     public static final String EMAIL_FROM = "service@express.com";
     public static final String SUBJECT_FROM_PERSONAL = "FASHIONEXPRESS APP";
 
-	public void sendMailSSL(String toEmail, String emailSubject, String emailBody, String content);
-	
 	public void sendMailTSL(String toEmail, String emailSubject, String emailBody, String content, String filename);
 	
 }
