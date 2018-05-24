@@ -21,15 +21,19 @@ import javax.mail.internet.MimeMultipart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.springapirest.util.FileUtil;
+
 public class EmailServiceImpl implements EmailService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
     private String to = "vespaluis@gmail.com";
     private String subject = "TOOLVENDOR APP";
     private String messageContent = "Teste de Mensagem";
+    private String SMTP_AUTH_PWD;
     
 	public EmailServiceImpl() {
 		super();
+		SMTP_AUTH_PWD  = FileUtil.readProperty("keys.properties", "SENDGRID_PASSWORD");
 	}
 	
 	@Override

@@ -49,7 +49,6 @@ public class Main {
   String index() {
     return "index";
   }
- 
 
   @RequestMapping("/db")
   String db(Map<String, Object> model) {
@@ -66,6 +65,8 @@ public class Main {
       }
 
       model.put("records", output);
+      rs.close();
+      stmt.close();
       return "db";
     } catch (Exception e) {
       model.put("message", e.getMessage());
