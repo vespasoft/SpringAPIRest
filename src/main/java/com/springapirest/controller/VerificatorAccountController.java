@@ -50,7 +50,6 @@ public class VerificatorAccountController {
     public void generateTempToken(HttpServletRequest request) {
     	UsernamePasswordAuthenticationToken authentication = TokenAuthenticationManager.getAuthentication(request);
     	User userFinded = userServiceImpl.getUserByUsername(authentication.getName());
-    	System.out.println("user "+userFinded.getUsername());
     	tempTokenServiceImpl.createToken(userFinded);
     }
 	
@@ -58,7 +57,6 @@ public class VerificatorAccountController {
     public void verificator(HttpServletRequest request, @RequestBody TempToken token) {
 		UsernamePasswordAuthenticationToken authentication = TokenAuthenticationManager.getAuthentication(request);
     	User userFinded = userServiceImpl.getUserByUsername(authentication.getName());
-    	System.out.println("user "+userFinded.getUsername());
     	
 		TempToken tempToken = tempTokenServiceImpl.getTempTokenByUser(userFinded);
 		if (tempToken==null) 

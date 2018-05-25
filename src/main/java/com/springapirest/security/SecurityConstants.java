@@ -18,4 +18,9 @@ public class SecurityConstants {
     public static final String URL_CATEGORIES = "/api/categories";
     public static final String URL_PRODUCTS = "/api/products";
     public static final String URL_USERS = "/api/users";
+	
+    private SecurityConstants() {
+		super();
+	}
+    
 }
