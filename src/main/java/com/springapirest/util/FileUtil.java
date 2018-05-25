@@ -11,15 +11,17 @@ import java.util.logging.Logger;
 
 public class FileUtil {
 	
-	private final static Logger LOGGER = Logger.getLogger("com.springapirest.Control");
+	private static final Logger LOGGER = Logger.getLogger("com.springapirest.Control");
+	
+	private FileUtil() {
+	}
 	
 	public static boolean writeProperty(String file, String property, String value) {
-		Properties prop = new Properties();
-		OutputStream output = null;
+		
 
 		try {
-
-			output = new FileOutputStream(file);
+			Properties prop = new Properties();
+			OutputStream output = new FileOutputStream(file);
 
 			prop.setProperty(property, value);
 
@@ -30,24 +32,15 @@ public class FileUtil {
 		} catch (IOException io) {
 			LOGGER.log(Level.WARNING, io.getMessage());
 			return false;
-		} finally {
-			if (output != null) {
-				try {
-					output.close();
-				} catch (IOException e) {
-					LOGGER.log(Level.WARNING, e.getMessage());
-				}
-			}
-
 		}
 	}
 	
 	public static String readProperty(String file, String property) {
-		Properties prop = new Properties();
-		InputStream input = null;
 
 		try {
-
+			Properties prop = new Properties();
+			InputStream input = null;
+			
 			input = new FileInputStream(file);
 
 			prop.load(input);
@@ -57,14 +50,6 @@ public class FileUtil {
 		} catch (IOException ex) {
 			LOGGER.log(Level.WARNING, ex.getMessage());
 			return null;
-		} finally {
-			if (input != null) {
-				try {
-					input.close();
-				} catch (IOException e) {
-					LOGGER.log(Level.WARNING, e.getMessage());
-				}
-			}
 		}
 	}
 	

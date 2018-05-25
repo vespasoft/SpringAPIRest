@@ -5,7 +5,6 @@ import java.util.Properties;
 
 import javax.mail.Session;
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.logging.Level;
 import javax.mail.Authenticator;
@@ -26,22 +25,18 @@ import com.springapirest.util.FileUtil;
 public class EmailServiceImpl implements EmailService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
-    private String to = "vespaluis@gmail.com";
-    private String subject = "TOOLVENDOR APP";
-    private String messageContent = "Teste de Mensagem";
-    private String SMTP_AUTH_PWD;
     
 	public EmailServiceImpl() {
 		super();
-		SMTP_AUTH_PWD  = FileUtil.readProperty("keys.properties", "SENDGRID_PASSWORD");
 	}
 	
 	@Override
 	public void sendMailTSL(String toEmail, String emailSubject, String emailBody, String content, String filename) {
-	    this.to = toEmail;
-        this.subject = emailSubject;
-        this.messageContent = emailBody;
-        
+		String to = toEmail;
+	    String subject = emailSubject;
+	    String messageContent = emailBody;
+	    String SMTP_AUTH_PWD = FileUtil.readProperty("keys.properties", "SENDGRID_PASSWORD");
+	    
         final Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.transport.protocol", "smtp");
@@ -62,34 +57,29 @@ public class EmailServiceImpl implements EmailService {
             
             final Message message = new MimeMessage(session);
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
-            try {
-                message.setFrom(new InternetAddress(EMAIL_FROM, SUBJECT_FROM_PERSONAL));
-            } catch (UnsupportedEncodingException e) {
-                LOGGER.error("Error al agregar InternetAddress: " + e.getMessage(), e);
-            }
+            
+            message.setFrom(new InternetAddress(EMAIL_FROM, SUBJECT_FROM_PERSONAL));
+            
             message.setSubject(subject);
-            switch (content) {
-            	case "text":
-            		message.setText(messageContent);
-            		break;
-            	case "text/html":
-            		if (filename != null) {
-            			// Create a multipar message
-            			Multipart multipart = new MimeMultipart();
-                        MimeBodyPart htmlPart = new MimeBodyPart();
-                        String htmlContent = emailBody;
-                        htmlPart.setText(htmlContent);
-                        multipart.addBodyPart(htmlPart);
-                        MimeBodyPart attachementPart = new MimeBodyPart();
-                        attachementPart.attachFile(new File(filename));
-                        attachementPart.setFileName("comprobante.pdf");
-                        multipart.addBodyPart(attachementPart);
-                        
-                        message.setContent(multipart);
-            		} else {
-            			message.setContent(emailBody, "text/html");
-            		}
-            		break;
+            if (content.equalsIgnoreCase("text/html")) {
+            	if (filename != null) {
+        			// Create a multipar message
+        			Multipart multipart = new MimeMultipart();
+                    MimeBodyPart htmlPart = new MimeBodyPart();
+                    String htmlContent = emailBody;
+                    htmlPart.setText(htmlContent);
+                    multipart.addBodyPart(htmlPart);
+                    MimeBodyPart attachementPart = new MimeBodyPart();
+                    attachementPart.attachFile(new File(filename));
+                    attachementPart.setFileName("comprobante.pdf");
+                    multipart.addBodyPart(attachementPart);
+                    
+                    message.setContent(multipart);
+        		} else {
+        			message.setContent(emailBody, "text/html");
+        		}
+            } else {
+            	message.setText(messageContent);
             }
             message.setSentDate(new Date());
             Transport.send(message);
