@@ -31,8 +31,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 @SpringBootApplication
@@ -44,9 +44,9 @@ public class Main {
   //@Autowired
   private DataSource dataSource;
   
-  private final static Logger LOGGER = Logger.getLogger("com.springapirest.Control");
+  private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     SpringApplication.run(Main.class, args);
   }
 
@@ -68,7 +68,7 @@ public class Main {
       stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
       rs = stmt.executeQuery("SELECT tick FROM ticks");
 
-      ArrayList<String> output = new ArrayList<String>();
+      ArrayList<String> output = new ArrayList<>();
       output.add("Wellcome to ToolvendorApp. ");
       while (rs.next()) {
         output.add("Read from DB: " + rs.getTimestamp("tick"));
@@ -85,19 +85,19 @@ public class Main {
 			try {
 				rs.close();
 			} catch (SQLException e) {
-				LOGGER.log(Level.WARNING, e.getMessage());
+				LOGGER.error(e.getMessage());
 			}
     	if (stmt!=null)
     		try {
     			stmt.close();
 			} catch (SQLException e) {
-				LOGGER.log(Level.WARNING, e.getMessage());
+				LOGGER.error(e.getMessage());
 			}
     	if (connection!=null)
     		try {
     			connection.close();
 			} catch (SQLException e) {
-				LOGGER.log(Level.WARNING, e.getMessage());
+				LOGGER.error(e.getMessage());
 			}
         
     }
@@ -107,16 +107,5 @@ public class Main {
   public BCryptPasswordEncoder bCryptPasswordEncoder() {
       return new BCryptPasswordEncoder();
   }
-
-  /*@Bean
-  public DataSource dataSource() throws SQLException {
-    if (dbUrl == null || dbUrl.isEmpty()) {
-      return new HikariDataSource();
-    } else {
-      HikariConfig config = new HikariConfig();
-      config.setJdbcUrl(dbUrl);
-      return new HikariDataSource(config);
-    }
-  }*/
 
 }

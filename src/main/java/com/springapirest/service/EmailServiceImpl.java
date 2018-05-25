@@ -93,7 +93,7 @@ public class EmailServiceImpl implements EmailService {
             }
             message.setSentDate(new Date());
             Transport.send(message);
-            System.out.println("SendMailTSL is done.");
+            LOGGER.debug("SendMailTSL is done.");
         } catch (final MessagingException ex) {
             LOGGER.error("Error al enviar mensagem: " + ex.getMessage(), ex);
         } catch (IOException ex) {
