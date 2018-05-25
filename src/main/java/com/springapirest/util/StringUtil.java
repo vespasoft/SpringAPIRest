@@ -22,7 +22,6 @@ public class StringUtil {
                     sb.append(c);
             }
             token = sb.toString();
-            System.out.println(token);
             return token;
     }
     
