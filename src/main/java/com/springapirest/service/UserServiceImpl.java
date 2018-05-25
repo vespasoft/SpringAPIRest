@@ -36,7 +36,6 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<User> getAll() {
-		// TODO Auto-generated method stub
 		return userRepository.findAll();
 	}
 
@@ -77,7 +76,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User updateUser(User userDetails) {
 		User user = userRepository.findOne(userDetails.getId());
-
         if (userDetails.getName()!=null) 
         	user.setName(userDetails.getName());
         if (userDetails.getSurname()!=null) 

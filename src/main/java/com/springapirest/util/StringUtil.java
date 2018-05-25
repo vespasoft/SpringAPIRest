@@ -7,8 +7,12 @@ import java.util.Random;
  * @author luisvespa
  */
 public class StringUtil {
-    
-    public static String generateTokenString (int length)  {
+	
+    private StringUtil() {
+		super();
+	}
+
+	public static String generateTokenString (int length)  {
             String token="";
             char[] chars = "1234567890".toCharArray();
             StringBuilder sb = new StringBuilder();

@@ -12,4 +12,8 @@ public class apiConstants {
     public static final String VERIFIER = "/verifier";
     public static final String PRODUCTS = "/products";
     
+	private apiConstants() {
+		super();
+	}
+    
 }
