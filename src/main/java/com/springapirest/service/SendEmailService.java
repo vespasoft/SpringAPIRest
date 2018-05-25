@@ -208,7 +208,7 @@ public class SendEmailService {
                 "\n" +
                 "</html>";
     
-    	emailService.sendMailTSL(toEmail, emailSubject, emailBodyMovil, "text/html", null);
+    	emailService.sendMail(toEmail, emailSubject, emailBodyMovil, "text/html", null);
     }
 
     public void sendValidationCodeEmail(User user, String verificationCode) {
@@ -321,7 +321,7 @@ public class SendEmailService {
             "\n" +
             "</html>";
         
-        emailService.sendMailTSL(toEmail, emailSubject, emailBody, "text/html", null);
+        emailService.sendMail(toEmail, emailSubject, emailBody, "text/html", null);
     }
 
 }

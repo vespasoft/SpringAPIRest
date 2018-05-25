@@ -25,13 +25,22 @@ import com.springapirest.util.FileUtil;
 public class EmailServiceImpl implements EmailService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
+	
+	public static final String TAG = "SendMail";
+    public static final String SERVIDOR_SMTP = "smtp.sendgrid.net"; //or simply "localhost"
+    public static final String SMTP_PORT = "587"; //25 or 587"
+    public static final String SMTP_PORT_SSL = "993"; //25 or 587"
+    public static final String SMTP_AUTH_USER = "app82798421@heroku.com";
+    public static final String EMAIL_FROM = "service@express.com";
+    public static final String SUBJECT_FROM_PERSONAL = "FASHIONEXPRESS APP";
+
     
 	public EmailServiceImpl() {
 		super();
 	}
 	
 	@Override
-	public void sendMailTSL(String toEmail, String emailSubject, String emailBody, String content, String filename) {
+	public void sendMail(String toEmail, String emailSubject, String emailBody, String content, String filename) {
 		String to = toEmail;
 	    String subject = emailSubject;
 	    String messageContent = emailBody;

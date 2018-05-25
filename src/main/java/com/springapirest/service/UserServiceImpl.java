@@ -32,6 +32,7 @@ public class UserServiceImpl implements UserService {
 			this.userRepository = userRepository;
 			this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 			this.tempTokenService = tempTokenService;
+			this.roleRepository = roleRepository;
 	}
 
 	@Override
