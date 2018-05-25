@@ -67,7 +67,7 @@ public class UserController {
     }
 
     @DeleteMapping("/users")
-    public ResponseEntity<?> deleteUser(HttpServletRequest request) {
+    public ResponseEntity<User> deleteUser(HttpServletRequest request) {
     	UsernamePasswordAuthenticationToken authentication = TokenAuthenticationManager.getAuthentication(request);
     	
     	User user = userServiceImpl.getUserByUsername(authentication.getName());
