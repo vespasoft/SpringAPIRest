@@ -15,8 +15,8 @@ import com.springapirest.repository.CategoryRepository;
 import com.springapirest.repository.ProductRepository;
 import com.springapirest.service.CategoryServiceImpl;
 import com.springapirest.service.ProductServiceImpl;
-
-import io.swagger.annotations.Api;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
 
 
 /**
@@ -24,7 +24,7 @@ import io.swagger.annotations.Api;
  */
 @RestController
 @RequestMapping("/api")
-@Api(value="Products Controller", description="Operations pertaining to products of a User Loggded")
+@SwaggerDefinition(tags = {@Tag(name = "Products Controller", description = "Operations pertaining to products of a User Loggded")})
 public class ProductController {
 	
 	@Autowired

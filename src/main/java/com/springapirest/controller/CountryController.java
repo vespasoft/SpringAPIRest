@@ -12,7 +12,8 @@ import com.springapirest.repository.CountryRepository;
 import com.springapirest.service.CityServiceImpl;
 import com.springapirest.service.CountryServiceImpl;
 
-import io.swagger.annotations.Api;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api")
-@Api(value="Country Controller", description="Operations pertaining of countries and cities")
+@SwaggerDefinition(tags = {@Tag(name = "Country Controller", description = "Operations pertaining of countries and cities")})
 public class CountryController {
     
     @Autowired
@@ -72,7 +73,7 @@ public class CountryController {
     }
 
     @DeleteMapping("/countries/{id}")
-    public ResponseEntity<?> deleteCountry(@PathVariable(value = "id") int countryId) {
+    public ResponseEntity<Country> deleteCountry(@PathVariable(value = "id") int countryId) {
 
         countryServiceImpl.deleteCountry(countryId);
         
