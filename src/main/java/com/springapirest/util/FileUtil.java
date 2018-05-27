@@ -1,11 +1,13 @@
 package com.springapirest.util;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -52,5 +54,28 @@ public class FileUtil {
 			return null;
 		}
 	}
+	
+	public static String getFile(String fileName) {
+
+		StringBuilder result = new StringBuilder("");
+
+		//Get file from resources folder
+		ClassLoader classLoader = FileUtil.class.getClassLoader();
+		File file = new File(classLoader.getResource(fileName).getFile());
+
+		try (Scanner scanner = new Scanner(file)) {
+
+			while (scanner.hasNextLine()) {
+				String line = scanner.nextLine();
+				result.append(line).append("\n");
+			}
+
+		} catch (IOException e) {
+			LOGGER.log(Level.WARNING, e.getMessage());
+		}
+			
+		return result.toString();
+
+	  }
 	
 }

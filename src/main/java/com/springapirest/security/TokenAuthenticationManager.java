@@ -26,12 +26,12 @@ public class TokenAuthenticationManager {
 
 	static void addAuthentication(HttpServletResponse res, String username) {
     	
-        String user_jwt = Jwts.builder()
+        String token = Jwts.builder()
                 .setSubject(username)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
-        res.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + user_jwt);
+        res.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + token);
        
     }
 

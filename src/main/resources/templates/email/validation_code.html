@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'error')}">
+
+  <head>
+    <meta http-equiv=Content-Type content=text/html; charset=UTF-8 />
+    <title>A&F Beauty Studio</title>
+    <meta name=viewport content=width=device-width, initial-scale=1.0/>
+  </head>
+  <body>
+    <b>Hola ${user},</b>
+    
+    <p>\n Para completar el registro debe verificar su correo electronico\n
+            introduzca en la aplicación el siguiente codigo de verificación.</p>
+            
+    <h3>Código de verificación: ${verificationCode} </h3>
+    
+    <b>Luego de introducir el código de verificación ya podrá utilizar nuestros servicios.</b>
+    
+    <b>Atentamente, el equipo de soporte A&F Beauty Studio</b>
+            
+  </body>
+
+</html>

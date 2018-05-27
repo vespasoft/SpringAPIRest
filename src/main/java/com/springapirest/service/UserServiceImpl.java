@@ -42,15 +42,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUserById(int id) {
-		// TODO Auto-generated method stub
-		User user = userRepository.findOne(id);
-		return user;
+		return userRepository.findOne(id);
 	}
 	
 	@Override
 	public User getUserByUsername(String username) {
-		User user = userRepository.findByUsername(username);
-		return user;
+		return userRepository.findByUsername(username);
 	}
 
 	@Override
@@ -66,7 +63,7 @@ public class UserServiceImpl implements UserService {
         if (userAdded!=null) {
         	String tokenGenerated = tempTokenService.createToken(userAdded);
         	
-        	// ejecuta un thread (hilo) en 2do plano donde se envia el correo.
+        	// ejecuta un thread (hilo) en 2do plan donde se envia el correo.
             ThreadSendValidationCodeEmail sendEmail = new ThreadSendValidationCodeEmail(user, tokenGenerated);
             sendEmail.start();
             
@@ -85,8 +82,7 @@ public class UserServiceImpl implements UserService {
         	user.setPhone(userDetails.getPhone());
         user.setUpdatedAt(new Date());
         
-        User updatedUser = userRepository.save(user);
-        return updatedUser;
+        return userRepository.save(user);
 	}
 
 	@Override
