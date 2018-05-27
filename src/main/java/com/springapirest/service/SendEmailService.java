@@ -6,7 +6,7 @@ public class SendEmailService {
 	
 	private EmailServiceImpl emailService = new EmailServiceImpl();
 	
-    public void SendWelcomeEmail(User user) {
+    public void sendWelcomeEmail(User user) {
         String toEmail = user.getUsername();
         String emailSubject = "Bienvenido a A&F Beauty Studio";
         String emailBodyMovil = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
