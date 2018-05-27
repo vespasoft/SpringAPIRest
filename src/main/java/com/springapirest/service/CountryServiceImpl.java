@@ -42,8 +42,7 @@ public class CountryServiceImpl implements CountryService {
 	        country.setNicename(countryDetails.getNicename());
 	        country.setNumcode(countryDetails.getNumcode());
 	        
-	        Country updatedCountry = countryRepository.save(country);
-	        return updatedCountry;
+	        return countryRepository.save(country);
 		}
 	}
 
