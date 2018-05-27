@@ -19,15 +19,12 @@ public class CountryServiceImpl implements CountryService {
 
 	@Override
 	public List<Country> getAll() {
-		// TODO Auto-generated method stub
 		return countryRepository.findAll();
 	}
 
 	@Override
 	public Country getCountryById(int id) {
-		// TODO Auto-generated method stub
-		Country country = countryRepository.findOne(id);
-		return country;
+		return countryRepository.findOne(id);
 	}
 	
 	@Override
