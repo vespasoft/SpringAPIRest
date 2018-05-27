@@ -15,8 +15,8 @@ public class ProductServiceImpl implements ProductService {
 	private ProductRepository productRepository;
     
 	public ProductServiceImpl(ProductRepository productRepository) {
-			super();
-			this.productRepository = productRepository;
+		super();
+		this.productRepository = productRepository;
 	}
 
 	@Override
@@ -26,8 +26,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Product getProductById(int id) {
-		Product product = productRepository.findOne(id);
-		return product;
+		return productRepository.findOne(id);
 	}
 
 	@Override
