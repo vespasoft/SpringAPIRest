@@ -44,7 +44,7 @@ public class EmailServiceImpl implements EmailService {
 		String to = toEmail;
 	    String subject = emailSubject;
 	    String messageContent = emailBody;
-	    String SMTP_AUTH_PWD = FileUtil.readProperty("keys.properties", "SENDGRID_PASSWORD");
+	    String smtp_auth_pwd = FileUtil.readProperty("keys.properties", "SENDGRID_PASSWORD");
 	    
         final Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -57,7 +57,7 @@ public class EmailServiceImpl implements EmailService {
 
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(SMTP_AUTH_USER, SMTP_AUTH_PWD);
+                return new PasswordAuthentication(SMTP_AUTH_USER, smtp_auth_pwd);
             }
 
         });
