@@ -47,7 +47,7 @@ public class ProductController {
     public Product getProductById(@PathVariable(value = "id") int productId) {
         Product productFinded = productServiceImpl.getProductById(productId);
         if (productFinded==null) 
-    		throw new ResourceNotFoundException("Product", "id", productId);
+    		throw new ResourceNotFoundException("Product", "id not found with "+ productId);
         
         return productFinded;
     }
@@ -56,7 +56,7 @@ public class ProductController {
     public List<Product> getAllByCategory(@PathVariable(value = "id") int categoryId) {
         Category categoryFinded = categoryServiceImpl.getCategoryById(categoryId);
         if (categoryFinded==null) 
-    		throw new ResourceNotFoundException("Category", "id", categoryId);
+    		throw new ResourceNotFoundException("Category", "id not found with "+ categoryId);
         
         return productServiceImpl.getAllByCategory(categoryFinded);
     }

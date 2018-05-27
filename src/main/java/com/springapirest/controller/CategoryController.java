@@ -41,7 +41,7 @@ public class CategoryController {
     public Category getCategoryById(@PathVariable(value = "id") int categoryId) {
 		Category categoryFinded = categoryServiceImpl.getCategoryById(categoryId);
         if (categoryFinded==null) 
-    		throw new ResourceNotFoundException("Category", "id", categoryId);
+    		throw new ResourceNotFoundException("Category", "id not found with "+ categoryId);
         
         return categoryFinded;
     }

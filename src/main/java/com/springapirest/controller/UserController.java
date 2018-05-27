@@ -44,8 +44,7 @@ public class UserController {
     @GetMapping("/users")
     public User getUserById(HttpServletRequest request) {
     	UsernamePasswordAuthenticationToken authentication = TokenAuthenticationManager.getAuthentication(request);
-    	User user = userServiceImpl.getUserByUsername(authentication.getName());
-    	return user;
+    	return userServiceImpl.getUserByUsername(authentication.getName());
     }
 
     @PostMapping("/users")

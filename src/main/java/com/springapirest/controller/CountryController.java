@@ -46,7 +46,7 @@ public class CountryController {
     public List<City> getAllCitiesByCountry(@PathVariable(value = "id") int countryId) {
     	Country countryFinded = countryServiceImpl.getCountryById(countryId);
     	if (countryFinded==null) 
-    		throw new ResourceNotFoundException("Countries", "id", countryId);
+    		throw new ResourceNotFoundException("Countries", "id not found with "+ countryId);
     	    		
     	return cityServiceImpl.getAllByCountry(countryFinded);
     }
