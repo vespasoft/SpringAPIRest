@@ -1,6 +1,6 @@
 package com.springapirest.util;
 
-public class apiConstants {
+public class ApiConstants {
 
 	public static final String API = "/api";
 	public static final String VERSION = "/v1";
@@ -12,7 +12,7 @@ public class apiConstants {
     public static final String VERIFIER = "/verifier";
     public static final String PRODUCTS = "/products";
     
-	private apiConstants() {
+	private ApiConstants() {
 		super();
 	}
     
