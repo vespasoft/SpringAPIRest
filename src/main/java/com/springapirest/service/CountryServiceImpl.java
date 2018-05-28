@@ -19,15 +19,12 @@ public class CountryServiceImpl implements CountryService {
 
 	@Override
 	public List<Country> getAll() {
-		// TODO Auto-generated method stub
 		return countryRepository.findAll();
 	}
 
 	@Override
 	public Country getCountryById(int id) {
-		// TODO Auto-generated method stub
-		Country country = countryRepository.findOne(id);
-		return country;
+		return countryRepository.findOne(id);
 	}
 	
 	@Override
@@ -45,16 +42,15 @@ public class CountryServiceImpl implements CountryService {
 	        country.setNicename(countryDetails.getNicename());
 	        country.setNumcode(countryDetails.getNumcode());
 	        
-	        Country updatedCountry = countryRepository.save(country);
-	        return updatedCountry;
+	        return countryRepository.save(country);
 		}
 	}
 
 	@Override
 	public void deleteCountry(int id) {
-		Country Country = countryRepository.findOne(id);
+		Country country = countryRepository.findOne(id);
 
-        countryRepository.delete(Country);
+        countryRepository.delete(country);
 	}
 
 }

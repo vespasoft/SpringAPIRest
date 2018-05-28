@@ -13,12 +13,16 @@ import com.springapirest.model.Category;
 import com.springapirest.repository.CategoryRepository;
 import com.springapirest.service.CategoryServiceImpl;
 
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+
 
 /**
  * Created by luis vespa on 06/05/18.
  */
 @RestController
 @RequestMapping("/api")
+@SwaggerDefinition(tags = {@Tag(name = "Category Controller", description = "Operations pertaining of product categories")})
 public class CategoryController {
 	
 	@Autowired
@@ -37,7 +41,7 @@ public class CategoryController {
     public Category getCategoryById(@PathVariable(value = "id") int categoryId) {
 		Category categoryFinded = categoryServiceImpl.getCategoryById(categoryId);
         if (categoryFinded==null) 
-    		throw new ResourceNotFoundException("Category", "id", categoryId);
+    		throw new ResourceNotFoundException("Category", "id not found with "+ categoryId);
         
         return categoryFinded;
     }

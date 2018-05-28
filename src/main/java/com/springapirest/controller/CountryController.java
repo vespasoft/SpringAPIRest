@@ -11,6 +11,10 @@ import com.springapirest.repository.CityRepository;
 import com.springapirest.repository.CountryRepository;
 import com.springapirest.service.CityServiceImpl;
 import com.springapirest.service.CountryServiceImpl;
+
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+
 import javax.validation.Valid;
 import java.util.List;
 
@@ -19,6 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api")
+@SwaggerDefinition(tags = {@Tag(name = "Country Controller", description = "Operations pertaining of countries and cities")})
 public class CountryController {
     
     @Autowired
@@ -41,7 +46,7 @@ public class CountryController {
     public List<City> getAllCitiesByCountry(@PathVariable(value = "id") int countryId) {
     	Country countryFinded = countryServiceImpl.getCountryById(countryId);
     	if (countryFinded==null) 
-    		throw new ResourceNotFoundException("Countries", "id", countryId);
+    		throw new ResourceNotFoundException("Countries", "id not found with "+ countryId);
     	    		
     	return cityServiceImpl.getAllByCountry(countryFinded);
     }
@@ -68,7 +73,7 @@ public class CountryController {
     }
 
     @DeleteMapping("/countries/{id}")
-    public ResponseEntity<?> deleteCountry(@PathVariable(value = "id") int countryId) {
+    public ResponseEntity<Country> deleteCountry(@PathVariable(value = "id") int countryId) {
 
         countryServiceImpl.deleteCountry(countryId);
         

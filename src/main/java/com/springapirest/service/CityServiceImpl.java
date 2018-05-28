@@ -14,13 +14,12 @@ public class CityServiceImpl implements CityService {
 	private CityRepository cityRepository;
     
 	public CityServiceImpl(CityRepository cityRepository) {
-			super();
-			this.cityRepository = cityRepository;
+		super();
+		this.cityRepository = cityRepository;
 	}
 
 	@Override
 	public List<City> getAllByCountry(Country country) {
-		// TODO Auto-generated method stub
 		return cityRepository.findByCountry(country);
 	}
 

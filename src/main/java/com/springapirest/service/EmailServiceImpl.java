@@ -5,7 +5,6 @@ import java.util.Properties;
 
 import javax.mail.Session;
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.logging.Level;
 import javax.mail.Authenticator;
@@ -21,67 +20,31 @@ import javax.mail.internet.MimeMultipart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.springapirest.util.FileUtil;
+
 public class EmailServiceImpl implements EmailService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
-    private String to = "vespaluis@gmail.com";
-    private String subject = "TOOLVENDOR APP";
-    private String messageContent = "Teste de Mensagem";
+	
+	public static final String TAG = "SendMail";
+    public static final String SERVIDOR_SMTP = "smtp.gmail.com"; // sendgrid "smtp.sendgrid.net" or simply "localhost"
+    public static final String SMTP_PORT = "587"; //25 or 587"
+    public static final String SMTP_PORT_SSL = "993"; //25 or 587"
+    public static final String SMTP_AUTH_USER = "vespasoft@gmail.com";
+    public static final String EMAIL_FROM = "vespasoft@gmail.com";
+    public static final String SUBJECT_FROM_PERSONAL = "A&F Beauty Studio";
     
 	public EmailServiceImpl() {
 		super();
 	}
 	
 	@Override
-    public void sendMailSSL(String toEmail, String emailSubject, String emailBody, String content) {
-        this.to = toEmail;
-        this.subject = emailSubject;
-        this.messageContent = emailBody;
-        
-        Properties props = new Properties();
-        props.put("mail.smtp.host", SERVIDOR_SMTP);
-        props.put("mail.smtp.socketFactory.port", SMTP_PORT_SSL);
-        props.put("mail.smtp.socketFactory.class",
-                        "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", SMTP_PORT_SSL);
-
-        Session session = Session.getDefaultInstance(props,
-                new javax.mail.Authenticator() {
-                        protected PasswordAuthentication getPasswordAuthentication() {
-                                return new PasswordAuthentication(SMTP_AUTH_USER, SMTP_AUTH_PWD);
-                        }
-                });
-
-        try {
-
-                final Message message = new MimeMessage(session);
-                message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
-                try {
-                    message.setFrom(new InternetAddress(EMAIL_FROM, SUBJECT_FROM_PERSONAL));
-                } catch (UnsupportedEncodingException e) {
-                    LOGGER.error("Error al agregar InternetAddress: " + e.getMessage(), e);
-                }
-                message.setSubject(subject);
-                if (content.equalsIgnoreCase("text")) message.setText(messageContent);
-                else if (content.equalsIgnoreCase("text/html")) message.setContent(messageContent, "text/html");
-                message.setSentDate(new Date());
-                Transport.send(message);
-
-                System.out.println("SendMailSSL is done.");
-
-        } catch (MessagingException ex) {
-                LOGGER.error("Error al enviar mensagem: " + ex.getMessage(), ex);
-        }
-    }
-
-	@Override
-	public void sendMailTSL(String toEmail, String emailSubject, String emailBody, String content, String filename) {
-	    this.to = toEmail;
-        this.subject = emailSubject;
-        this.messageContent = emailBody;
-        
-        final Properties props = new Properties();
+	public void sendMail(String toEmail, String emailSubject, String emailBody, String content, String filename) {
+		String to = toEmail;
+	    String subject = emailSubject;
+	    String messageContent = emailBody;
+	    String sendGridPassword = FileUtil.getProperty("application.properties", "spring.sendgrid.password");
+		final Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.starttls.enable", "true");
@@ -92,7 +55,7 @@ public class EmailServiceImpl implements EmailService {
 
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(SMTP_AUTH_USER, SMTP_AUTH_PWD);
+                return new PasswordAuthentication(SMTP_AUTH_USER, sendGridPassword);
             }
 
         });
@@ -101,38 +64,33 @@ public class EmailServiceImpl implements EmailService {
             
             final Message message = new MimeMessage(session);
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
-            try {
-                message.setFrom(new InternetAddress(EMAIL_FROM, SUBJECT_FROM_PERSONAL));
-            } catch (UnsupportedEncodingException e) {
-                LOGGER.error("Error al agregar InternetAddress: " + e.getMessage(), e);
-            }
+            
+            message.setFrom(new InternetAddress(EMAIL_FROM, SUBJECT_FROM_PERSONAL));
+            
             message.setSubject(subject);
-            switch (content) {
-            	case "text":
-            		message.setText(messageContent);
-            		break;
-            	case "text/html":
-            		if (filename != null) {
-            			// Create a multipar message
-            			Multipart multipart = new MimeMultipart();
-                        MimeBodyPart htmlPart = new MimeBodyPart();
-                        String htmlContent = emailBody;
-                        htmlPart.setText(htmlContent);
-                        multipart.addBodyPart(htmlPart);
-                        MimeBodyPart attachementPart = new MimeBodyPart();
-                        attachementPart.attachFile(new File(filename));
-                        attachementPart.setFileName("comprobante.pdf");
-                        multipart.addBodyPart(attachementPart);
-                        
-                        message.setContent(multipart);
-            		} else {
-            			message.setContent(emailBody, "text/html");
-            		}
-            		break;
+            if (content.equalsIgnoreCase("text/html")) {
+            	if (filename != null) {
+        			// Create a multipar message
+        			Multipart multipart = new MimeMultipart();
+                    MimeBodyPart htmlPart = new MimeBodyPart();
+                    String htmlContent = emailBody;
+                    htmlPart.setText(htmlContent);
+                    multipart.addBodyPart(htmlPart);
+                    MimeBodyPart attachementPart = new MimeBodyPart();
+                    attachementPart.attachFile(new File(filename));
+                    attachementPart.setFileName("comprobante.pdf");
+                    multipart.addBodyPart(attachementPart);
+                    
+                    message.setContent(multipart);
+        		} else {
+        			message.setContent(emailBody, "text/html");
+        		}
+            } else {
+            	message.setText(messageContent);
             }
             message.setSentDate(new Date());
             Transport.send(message);
-            System.out.println("SendMailTSL is done.");
+            LOGGER.debug("SendMailTSL is done.");
         } catch (final MessagingException ex) {
             LOGGER.error("Error al enviar mensagem: " + ex.getMessage(), ex);
         } catch (IOException ex) {

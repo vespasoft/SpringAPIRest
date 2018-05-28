@@ -20,12 +20,15 @@ import com.springapirest.repository.UserRepository;
 import com.springapirest.security.TokenAuthenticationManager;
 import com.springapirest.service.TempTokenServiceImpl;
 import com.springapirest.service.UserServiceImpl;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
 
 /**
  * Created by Luigi Vespa on 27/06/18.
  */
 @RestController
 @RequestMapping("/api")
+@SwaggerDefinition(tags = {@Tag(name = "User Controller", description = "Operations pertaining of User Logged")})
 public class UserController {
 
 	@Autowired
@@ -41,8 +44,7 @@ public class UserController {
     @GetMapping("/users")
     public User getUserById(HttpServletRequest request) {
     	UsernamePasswordAuthenticationToken authentication = TokenAuthenticationManager.getAuthentication(request);
-    	User user = userServiceImpl.getUserByUsername(authentication.getName());
-    	return user;
+    	return userServiceImpl.getUserByUsername(authentication.getName());
     }
 
     @PostMapping("/users")
@@ -64,7 +66,7 @@ public class UserController {
     }
 
     @DeleteMapping("/users")
-    public ResponseEntity<?> deleteUser(HttpServletRequest request) {
+    public ResponseEntity<User> deleteUser(HttpServletRequest request) {
     	UsernamePasswordAuthenticationToken authentication = TokenAuthenticationManager.getAuthentication(request);
     	
     	User user = userServiceImpl.getUserByUsername(authentication.getName());

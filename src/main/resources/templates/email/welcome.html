@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'error')}">
+  <head>
+    <meta http-equiv=Content-Type content=text/html; charset=UTF-8 />
+    <title>A&F Beauty Studio</title>
+    <meta name=viewport content=width=device-width, initial-scale=1.0/>
+  </head>
+  <body>
+     <p>Hola ${name},</p>
+    
+     <p>Bienvenido a A&F Beauty Studio, Usted se ha registrado satisfactoriamente.</p>
+     
+     <p>A continuación le recordamos su usuario para acceder a la aplicación:</p>
+     <h4>username: ${username}</h4>
+     
+     <p>En caso de olvido de la contraseña puede utilizar la opción de restaurar a traves del App.</p>
+     
+     <p>Atentamente,</p> 
+     
+     <p>El equipo de soporte A&F Beauty Studio</p>
+  </body>
+
+</html>

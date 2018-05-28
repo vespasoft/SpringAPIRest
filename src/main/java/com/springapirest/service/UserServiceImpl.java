@@ -32,25 +32,22 @@ public class UserServiceImpl implements UserService {
 			this.userRepository = userRepository;
 			this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 			this.tempTokenService = tempTokenService;
+			this.roleRepository = roleRepository;
 	}
 
 	@Override
 	public List<User> getAll() {
-		// TODO Auto-generated method stub
 		return userRepository.findAll();
 	}
 
 	@Override
 	public User getUserById(int id) {
-		// TODO Auto-generated method stub
-		User user = userRepository.findOne(id);
-		return user;
+		return userRepository.findOne(id);
 	}
 	
 	@Override
 	public User getUserByUsername(String username) {
-		User user = userRepository.findByUsername(username);
-		return user;
+		return userRepository.findByUsername(username);
 	}
 
 	@Override
@@ -66,7 +63,7 @@ public class UserServiceImpl implements UserService {
         if (userAdded!=null) {
         	String tokenGenerated = tempTokenService.createToken(userAdded);
         	
-        	// ejecuta un thread (hilo) en 2do plano donde se envia el correo.
+        	// ejecuta un thread (hilo) en 2do plan donde se envia el correo.
             ThreadSendValidationCodeEmail sendEmail = new ThreadSendValidationCodeEmail(user, tokenGenerated);
             sendEmail.start();
             
@@ -77,7 +74,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User updateUser(User userDetails) {
 		User user = userRepository.findOne(userDetails.getId());
-
         if (userDetails.getName()!=null) 
         	user.setName(userDetails.getName());
         if (userDetails.getSurname()!=null) 
@@ -85,9 +81,9 @@ public class UserServiceImpl implements UserService {
         if (userDetails.getPhone()!=null) 
         	user.setPhone(userDetails.getPhone());
         user.setUpdatedAt(new Date());
-        
-        User updatedUser = userRepository.save(user);
-        return updatedUser;
+        user.setActive(userDetails.isActive());
+        user.setVerified(userDetails.isVerified());
+        return userRepository.save(user);
 	}
 
 	@Override

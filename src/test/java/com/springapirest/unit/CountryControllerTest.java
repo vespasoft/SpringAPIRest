@@ -90,7 +90,7 @@ public class CountryControllerTest {
 	               .contentType(APPLICATION_JSON))
 	               .andExpect(status().isOk())
 	               .andExpect(jsonPath("$[0].id").exists())
-				   .andExpect(jsonPath("$[0].city", is(city.getCity())));
+				   .andExpect(jsonPath("$[0].name", is(city.getName())));
 		
 	}
 	
