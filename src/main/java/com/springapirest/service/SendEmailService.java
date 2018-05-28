@@ -12,8 +12,8 @@ public class SendEmailService {
         String emailSubject = "Bienvenido a A&F Beauty Studio";
         String emailBody = FileUtil.getFile("templates/email/welcome.html");
         
-        emailBody = emailBody.replaceAll("${username}", user.getUsername());
-        emailBody = emailBody.replaceAll("${password}", user.getPassword());
+        emailBody = emailBody.replace("${username}", user.getUsername());
+        emailBody = emailBody.replace("${password}", user.getPassword());
     
     	emailService.sendMail(toEmail, emailSubject, emailBody, "text/html", null);
     }
@@ -23,7 +23,7 @@ public class SendEmailService {
         String emailSubject = "Validar correo eléctronico";
         String emailBody = FileUtil.getFile("templates/email/validation_code.html");
         
-        emailBody = emailBody.replaceAll("${verificationCode}", verificationCode);
+        emailBody = emailBody.replace("${verificationCode}", verificationCode);
         
         emailService.sendMail(toEmail, emailSubject, emailBody, "text/html", null);
     }

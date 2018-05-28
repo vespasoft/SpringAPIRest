@@ -8,17 +8,17 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FileUtil {
 	
-	private static final Logger LOGGER = Logger.getLogger("com.springapirest.Control");
+	private static final Logger LOGGER = LoggerFactory.getLogger(FileUtil.class);
 	
 	private FileUtil() {
 	}
 	
-	public static boolean writeProperty(String file, String property, String value) {
+	public static boolean setProperty(String file, String property, String value) {
 		
 
 		try {
@@ -32,25 +32,26 @@ public class FileUtil {
 			return true;
 
 		} catch (IOException io) {
-			LOGGER.log(Level.WARNING, io.getMessage());
+			LOGGER.error(io.getMessage());
 			return false;
 		}
 	}
 	
-	public static String readProperty(String file, String property) {
+	public static String getProperty(String file, String property) {
 
 		try {
 			Properties prop = new Properties();
 			InputStream input = null;
 			
-			input = new FileInputStream(file);
-
+			ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+			input = classloader.getResourceAsStream(file);
+			
 			prop.load(input);
-
+			
 			return prop.getProperty(property);
 
 		} catch (IOException ex) {
-			LOGGER.log(Level.WARNING, ex.getMessage());
+			LOGGER.error(ex.getMessage());
 			return null;
 		}
 	}
@@ -62,6 +63,7 @@ public class FileUtil {
 		//Get file from resources folder
 		ClassLoader classLoader = FileUtil.class.getClassLoader();
 		File file = new File(classLoader.getResource(fileName).getFile());
+		
 
 		try (Scanner scanner = new Scanner(file)) {
 
@@ -71,7 +73,7 @@ public class FileUtil {
 			}
 
 		} catch (IOException e) {
-			LOGGER.log(Level.WARNING, e.getMessage());
+			LOGGER.error(e.getMessage());
 		}
 			
 		return result.toString();

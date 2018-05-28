@@ -27,13 +27,12 @@ public class EmailServiceImpl implements EmailService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
 	
 	public static final String TAG = "SendMail";
-    public static final String SERVIDOR_SMTP = "smtp.sendgrid.net"; //or simply "localhost"
+    public static final String SERVIDOR_SMTP = "smtp.gmail.com"; // sendgrid "smtp.sendgrid.net" or simply "localhost"
     public static final String SMTP_PORT = "587"; //25 or 587"
     public static final String SMTP_PORT_SSL = "993"; //25 or 587"
-    public static final String SMTP_AUTH_USER = "app82798421@heroku.com";
-    public static final String EMAIL_FROM = "service@express.com";
+    public static final String SMTP_AUTH_USER = "vespasoft@gmail.com";
+    public static final String EMAIL_FROM = "vespasoft@gmail.com";
     public static final String SUBJECT_FROM_PERSONAL = "FASHIONEXPRESS APP";
-
     
 	public EmailServiceImpl() {
 		super();
@@ -44,9 +43,8 @@ public class EmailServiceImpl implements EmailService {
 		String to = toEmail;
 	    String subject = emailSubject;
 	    String messageContent = emailBody;
-	    String authenticationPassword = FileUtil.readProperty("keys.properties", "SENDGRID_PASSWORD");
-	    
-        final Properties props = new Properties();
+	    String sendGridPassword = FileUtil.getProperty("application.properties", "spring.sendgrid.password");
+		final Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.starttls.enable", "true");
@@ -57,7 +55,7 @@ public class EmailServiceImpl implements EmailService {
 
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(SMTP_AUTH_USER, authenticationPassword);
+                return new PasswordAuthentication(SMTP_AUTH_USER, sendGridPassword);
             }
 
         });
