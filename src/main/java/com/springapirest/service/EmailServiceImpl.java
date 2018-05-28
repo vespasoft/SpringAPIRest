@@ -32,7 +32,7 @@ public class EmailServiceImpl implements EmailService {
     public static final String SMTP_PORT_SSL = "993"; //25 or 587"
     public static final String SMTP_AUTH_USER = "vespasoft@gmail.com";
     public static final String EMAIL_FROM = "vespasoft@gmail.com";
-    public static final String SUBJECT_FROM_PERSONAL = "FASHIONEXPRESS APP";
+    public static final String SUBJECT_FROM_PERSONAL = "A&F Beauty Studio";
     
 	public EmailServiceImpl() {
 		super();

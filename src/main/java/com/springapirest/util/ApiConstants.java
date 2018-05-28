@@ -12,8 +12,7 @@ public class ApiConstants {
     public static final String VERIFIER = "/verifier";
     public static final String PRODUCTS = "/products";
     
-	private ApiConstants() {
-		super();
-	}
-    
+    protected ApiConstants() {
+    }
+ 
 }

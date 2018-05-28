@@ -14,7 +14,7 @@ public class FileUtil {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileUtil.class);
 	
-	private FileUtil() {
+	protected FileUtil() {
 	}
 	
 	public static boolean setProperty(String file, String property, String value) {
