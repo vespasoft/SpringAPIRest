@@ -18,6 +18,7 @@ import com.springapirest.repository.UserRepository;
 import com.springapirest.security.TokenAuthenticationManager;
 import com.springapirest.service.TempTokenServiceImpl;
 import com.springapirest.service.UserServiceImpl;
+import com.springapirest.thread.ThreadSendValidationCodeEmail;
 import com.springapirest.thread.ThreadSendWelcomeEmail;
 
 import io.swagger.annotations.SwaggerDefinition;
@@ -50,7 +51,13 @@ public class VerificatorAccountController {
     public void generateTempToken(HttpServletRequest request) {
     	UsernamePasswordAuthenticationToken authentication = TokenAuthenticationManager.getAuthentication(request);
     	User userFinded = userServiceImpl.getUserByUsername(authentication.getName());
-    	tempTokenServiceImpl.createToken(userFinded);
+    	if (userFinded.isVerified()==false) {
+    		String tokenGenerated = tempTokenServiceImpl.createToken(userFinded);
+        	ThreadSendValidationCodeEmail sendEmail = new ThreadSendValidationCodeEmail(userFinded, tokenGenerated);
+            sendEmail.start();
+    	} else 
+    		throw new ResourceNotFoundException("verificator-account", "This user already is verified.");
+    	
     }
 	
 	@PostMapping("/verificator-account")
@@ -60,7 +67,7 @@ public class VerificatorAccountController {
     	
 		TempToken tempToken = tempTokenServiceImpl.getTempTokenByUser(userFinded);
 		if (tempToken==null) 
-    		throw new ResourceNotFoundException("Verificator", "This user have not token generated.");
+    		throw new ResourceNotFoundException("verificator-account", "This user have not token generated.");
 		
 		if (tempToken.getTokenString().equals(token.getTokenString())) {
 			userFinded.setVerified(true);
