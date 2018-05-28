@@ -14,7 +14,6 @@ public class SendEmailService {
         
         emailBody = emailBody.replace("${name}", user.getName());
         emailBody = emailBody.replace("${username}", user.getUsername());
-        emailBody = emailBody.replace("${password}", user.getPassword());
     
     	emailService.sendMail(toEmail, emailSubject, emailBody, "text/html", null);
     }

@@ -81,7 +81,8 @@ public class UserServiceImpl implements UserService {
         if (userDetails.getPhone()!=null) 
         	user.setPhone(userDetails.getPhone());
         user.setUpdatedAt(new Date());
-        
+        user.setActive(userDetails.isActive());
+        user.setVerified(userDetails.isVerified());
         return userRepository.save(user);
 	}
 
