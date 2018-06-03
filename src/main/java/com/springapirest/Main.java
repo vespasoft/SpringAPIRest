@@ -52,7 +52,45 @@ public class Main {
 
   @RequestMapping("/")
   String index() {
-    return "index";
+	  configureDb();
+	  return "index";
+  }
+  
+  private void configureDb() {
+	  Connection connection = null;
+		Statement stmt = null;  
+		ResultSet rs = null;
+		
+		try {
+	      connection = dataSource.getConnection();
+	  	  stmt = connection.createStatement();
+	      stmt.executeUpdate("INSERT INTO city VALUES (1, 1, 'MADRID')");
+	      stmt.executeUpdate("INSERT INTO city VALUES (2, 1, 'BARCELONA')");
+	      rs = stmt.executeQuery("SELECT name FROM city");
+	      
+	    } catch (Exception e) {
+	      
+	    } finally {
+	    	if (rs!=null)
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					LOGGER.error(e.getMessage());
+				}
+	    	if (stmt!=null)
+	    		try {
+	    			stmt.close();
+				} catch (SQLException e) {
+					LOGGER.error(e.getMessage());
+				}
+	    	if (connection!=null)
+	    		try {
+	    			connection.close();
+				} catch (SQLException e) {
+					LOGGER.error(e.getMessage());
+				}
+	        
+	    }
   }
 
   @RequestMapping("/db")
