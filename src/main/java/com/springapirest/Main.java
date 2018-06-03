@@ -64,14 +64,14 @@ public class Main {
 	try {
       connection = dataSource.getConnection();
   	  stmt = connection.createStatement();
-      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
-      stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
-      rs = stmt.executeQuery("SELECT tick FROM ticks");
+      stmt.executeUpdate("INSERT INTO city VALUES (1, 1, 'MADRID')");
+      stmt.executeUpdate("INSERT INTO city VALUES (2, 1, 'BARCELONA')");
+      rs = stmt.executeQuery("SELECT name FROM city");
 
       ArrayList<String> output = new ArrayList<>();
-      output.add("Wellcome to ToolvendorApp. ");
+      output.add("Wellcome to APIRest. ");
       while (rs.next()) {
-        output.add("Read from DB: " + rs.getTimestamp("tick"));
+        output.add("Read from DB: " + rs.getTimestamp("name"));
       }
 
       model.put("records", output);
