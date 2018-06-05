@@ -1,6 +1,6 @@
 package com.springapirest.util;
 
-public class apiConstants {
+public class ApiConstants {
 
 	public static final String API = "/api";
 	public static final String VERSION = "/v1";
