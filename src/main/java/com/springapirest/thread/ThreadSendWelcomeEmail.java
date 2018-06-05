@@ -26,7 +26,7 @@ public class ThreadSendWelcomeEmail extends Thread {
     	SendEmailService emailserv = new SendEmailService();
         
         if ( user!=null ) {
-        	emailserv.SendWelcomeEmail(user);
+        	emailserv.sendWelcomeEmail(user);
         }
         
     }

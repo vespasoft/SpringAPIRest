@@ -10,5 +10,9 @@ public class ApiConstants {
     public static final String USERS = "/users";
     public static final String AUTH = "/authenticator";
     public static final String VERIFIER = "/verifier";
+    public static final String PRODUCTS = "/products";
     
+    protected ApiConstants() {
+    }
+ 
 }

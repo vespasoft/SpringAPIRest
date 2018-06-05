@@ -21,12 +21,16 @@ import com.springapirest.service.UserServiceImpl;
 import com.springapirest.thread.ThreadSendValidationCodeEmail;
 import com.springapirest.thread.ThreadSendWelcomeEmail;
 
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+
 /**
  * Created by Luigi Vespa on 28/05/18.
  */
 @RestController
 @RequestMapping("/api")
-public class VerificatorController {
+@SwaggerDefinition(tags = {@Tag(name = "Verificator Account Controller", description = "Operations pertaining of account verification of the user logged")})
+public class VerificatorAccountController {
 	
 	@Autowired
 	TempTokenServiceImpl tempTokenServiceImpl;
@@ -34,7 +38,7 @@ public class VerificatorController {
 	@Autowired
 	UserServiceImpl userServiceImpl;
 
-    public VerificatorController(UserRepository userRepository,
+    public VerificatorAccountController(UserRepository userRepository,
     					  RoleRepository roleRepository,
     					  TempTokenRepository tokenRepository,
                           BCryptPasswordEncoder bCryptPasswordEncoder, 
@@ -43,23 +47,27 @@ public class VerificatorController {
         this.tempTokenServiceImpl = new TempTokenServiceImpl(tokenRepository);
     }
 	
-	@GetMapping("/verificator")
+	@GetMapping("/verificator-account")
     public void generateTempToken(HttpServletRequest request) {
     	UsernamePasswordAuthenticationToken authentication = TokenAuthenticationManager.getAuthentication(request);
     	User userFinded = userServiceImpl.getUserByUsername(authentication.getName());
-    	System.out.println("user "+userFinded.getUsername());
-    	tempTokenServiceImpl.createToken(userFinded);
+    	if (userFinded.isVerified()==false) {
+    		String tokenGenerated = tempTokenServiceImpl.createToken(userFinded);
+        	ThreadSendValidationCodeEmail sendEmail = new ThreadSendValidationCodeEmail(userFinded, tokenGenerated);
+            sendEmail.start();
+    	} else 
+    		throw new ResourceNotFoundException("verificator-account", "This user already is verified.");
+    	
     }
 	
-	@PostMapping("/verificator")
+	@PostMapping("/verificator-account")
     public void verificator(HttpServletRequest request, @RequestBody TempToken token) {
 		UsernamePasswordAuthenticationToken authentication = TokenAuthenticationManager.getAuthentication(request);
     	User userFinded = userServiceImpl.getUserByUsername(authentication.getName());
-    	System.out.println("user "+userFinded.getUsername());
     	
 		TempToken tempToken = tempTokenServiceImpl.getTempTokenByUser(userFinded);
 		if (tempToken==null) 
-    		throw new ResourceNotFoundException("Verificator", "This user have not token generated.");
+    		throw new ResourceNotFoundException("verificator-account", "This user have not token generated.");
 		
 		if (tempToken.getTokenString().equals(token.getTokenString())) {
 			userFinded.setVerified(true);

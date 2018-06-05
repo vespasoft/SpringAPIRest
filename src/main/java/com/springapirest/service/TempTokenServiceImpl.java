@@ -21,8 +21,7 @@ public class TempTokenServiceImpl implements TempTokenService {
 
 	@Override
 	public TempToken getTempTokenByUser(User user) {
-		TempToken token = tokenRepository.findByUser(user);
-		return token;
+		return tokenRepository.findByUser(user);
 	}
 
 	@Override

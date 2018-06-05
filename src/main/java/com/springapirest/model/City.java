@@ -16,8 +16,8 @@ public class City {
 	 @GeneratedValue(strategy = GenerationType.IDENTITY)
 	 private Integer id;
 	 
-	 @Column(name="city", length=45)
-	 private String city;
+	 @Column(name="name", length=45)
+	 private String name;
 	 
 	 @ManyToOne(optional = false)
 	 @JoinColumn(name="country_id", nullable=false)
@@ -26,46 +26,46 @@ public class City {
 	 public City() {
 	 }
 
-
-	public City(Country country) {
+	 public City(Country country) {
 	    this.country = country;
 	 }
 	 
-	 public City(Country country, String city) {
+	 public City(Country country, String name) {
 	   this.country = country;
-	   this.city = city;
+	   this.name = name;
 	 }
 	
-	 public City(Integer id, String city, Country country) {
+	 public City(Integer id, String name, Country country) {
 		super();
 		this.id = id;
-		this.city = city;
+		this.name = name;
 		this.country = country;
 	}
 
 	public Integer getId() {
 	    return this.id;
-	 }
+	}
 	
-	 public void setId(Integer id) {
+	public void setId(Integer id) {
 	    this.id = id;
-	 }
+	}
 	
-	 public Country getCountry() {
+	public Country getCountry() {
 	    return this.country;
-	 }
+	}
 	
-	 public void setCountry(Country country) {
+	public void setCountry(Country country) {
 	    this.country = country;
-	 }
-	
-	 public String getCity() {
-	    return this.city;
-	 }
-	
-	 public void setCity(String city) {
-	    this.city = city;
-	 }
+	}
+
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 }
 
