@@ -48,6 +48,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         	.antMatchers(HttpMethod.GET, URL_CITIES).permitAll()
         	.antMatchers(HttpMethod.POST, URL_SIGN_UP).permitAll()
             .antMatchers(HttpMethod.POST, URL_LOG_IN).permitAll()*/
+        	.antMatchers(HttpMethod.GET, "/lang-logo.png").permitAll()
             .antMatchers(HttpMethod.GET, URL_PRODUCTS).authenticated()
             .antMatchers(HttpMethod.GET, URL_PRODUCTS +"/").authenticated()
             .antMatchers(HttpMethod.GET, URL_USERS).authenticated()
