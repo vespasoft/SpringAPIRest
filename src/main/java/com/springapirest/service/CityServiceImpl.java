@@ -23,4 +23,36 @@ public class CityServiceImpl implements CityService {
 		return cityRepository.findByCountry(country);
 	}
 
+	@Override
+	public City getCityById(int id) {
+		return cityRepository.findOne(id);
+	}
+
+	@Override
+	public void createCity(City city) {
+		cityRepository.save(city);
+		
+	}
+
+	@Override
+	public City updateCity(City cityDetails) {
+		City city = cityRepository.findOne(cityDetails.getId());
+		if (city==null) 
+			return null;
+		else {
+			city.setName(cityDetails.getName());
+	        city.setCountry(cityDetails.getCountry());
+	        
+	        return cityRepository.save(city);
+		}
+	}
+
+	@Override
+	public void deleteCity(int id) {
+		City city = cityRepository.findOne(id);
+
+		cityRepository.delete(city);
+		
+	}
+
 }
